@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Islamic Portal - Daily Guidance</title>
+    <style>
+/* styles.css — inlined: the published build does not serve standalone .css files next to the demo pages, so the styles travel inside the page itself. */
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+}
+
+/* Header Styles */
+.header {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.menu-toggle {
+    font-size: 1.5rem;
+    cursor: pointer;
+    background: rgba(255,255,255,0.1);
+    padding: 0.5rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.menu-toggle:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.site-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    flex-grow: 1;
+    margin: 0 1rem;
+}
+
+.date-display {
+    text-align: right;
+    font-size: 0.9rem;
+}
+
+.date-display div {
+    margin-bottom: 0.2rem;
+}
+
+/* Sidebar Navigation */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 300px;
+    height: 100vh;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
+    z-index: 1001;
+    transition: left 0.3s ease;
+    padding-top: 3rem;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    background: rgba(255,255,255,0.1);
+    padding: 0.3rem;
+    border-radius: 50%;
+}
+
+.nav-menu {
+    list-style: none;
+    padding: 1rem;
+}
+
+.nav-menu li {
+    margin-bottom: 0.5rem;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    background: rgba(255,255,255,0.1);
+}
+
+.nav-link i {
+    margin-right: 0.8rem;
+    width: 20px;
+    text-align: center;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+    display: none;
+}
+
+.overlay.active {
+    display: block;
+}
+
+/* Main Content */
+.main-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Daily Hadith Section */
+.daily-hadith {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-left: 5px solid #27ae60;
+}
+
+.daily-hadith h2 {
+    color: #27ae60;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.hadith-content {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #2c3e50;
+    font-style: italic;
+    margin-bottom: 1rem;
+}
+
+.hadith-reference {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    text-align: right;
+}
+
+/* Prayer Times Section */
+.prayer-times {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-left: 5px solid #3498db;
+}
+
+.prayer-times h2 {
+    color: #3498db;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.prayer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+}
+
+.prayer-item {
+    text-align: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.prayer-name {
+    display: block;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.prayer-time {
+    font-size: 1.1rem;
+    color: #3498db;
+    font-weight: bold;
+}
+
+/* Featured Content Section */
+.featured-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-left: 5px solid #9b59b6;
+}
+
+.featured-content h2 {
+    color: #9b59b6;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.content-item {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.content-item h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.content-item ul {
+    list-style: none;
+}
+
+.content-item li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.content-item li:last-child {
+    border-bottom: none;
+}
+
+.content-item a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.content-item a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header {
+        padding: 1rem;
+    }
+
+    .site-title {
+        font-size: 1.4rem;
+    }
+
+    .date-display {
+        font-size: 0.8rem;
+    }
+
+    .main-content {
+        padding: 1rem;
+    }
+
+    .daily-hadith,
+    .prayer-times,
+    .featured-content {
+        padding: 1.5rem;
+    }
+
+    .hadith-content {
+        font-size: 1rem;
+    }
+
+    .prayer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .menu-toggle {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .prayer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        width: 280px;
+    }
+}
+
+/* Animation for content loading */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.daily-hadith, .prayer-times, .featured-content {
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Loading spinner */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header with Hamburger Menu -->
+    <header class="header">
+        <div class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <h1 class="site-title">Islamic Portal</h1>
+        <div class="date-display">
+            <div id="islamicDate">Loading...</div>
+            <div id="gregorianDate">Loading...</div>
+        </div>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="close-btn" id="closeSidebar">
+            <i class="fas fa-times"></i>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="#" class="nav-link" data-page="home"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#" class="nav-link" data-page="articles"><i class="fas fa-book"></i> Articles</a></li>
+            <li><a href="#" class="nav-link" data-page="books"><i class="fas fa-book-open"></i> Books</a></li>
+            <li><a href="#" class="nav-link" data-page="videos"><i class="fas fa-video"></i> Videos</a></li>
+            <li><a href="#" class="nav-link" data-page="audios"><i class="fas fa-music"></i> Audios</a></li>
+            <li><a href="admin.html" class="nav-link"><i class="fas fa-cog"></i> Admin Panel</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Daily Hadith Section -->
+        <section class="daily-hadith">
+            <h2><i class="fas fa-quote-left"></i> Today's Hadith</h2>
+            <div class="hadith-content" id="hadithContent">
+                <p><i class="fas fa-spinner fa-spin"></i> Loading today's hadith...</p>
+            </div>
+            <div class="hadith-reference" id="hadithReference">
+                <em>Loading reference...</em>
+            </div>
+        </section>
+
+        <!-- Prayer Times Section -->
+        <section class="prayer-times">
+            <h2><i class="fas fa-mosque"></i> Prayer Times</h2>
+            <div class="prayer-grid" id="prayerGrid">
+                <div class="prayer-item">
+                    <span class="prayer-name">Fajr</span>
+                    <span class="prayer-time" id="fajrTime">05:30</span>
+                </div>
+                <div class="prayer-item">
+                    <span class="prayer-name">Dhuhr</span>
+                    <span class="prayer-time" id="dhuhrTime">12:15</span>
+                </div>
+                <div class="prayer-item">
+                    <span class="prayer-name">Asr</span>
+                    <span class="prayer-time" id="asrTime">15:45</span>
+                </div>
+                <div class="prayer-item">
+                    <span class="prayer-name">Maghrib</span>
+                    <span class="prayer-time" id="maghribTime">18:20</span>
+                </div>
+                <div class="prayer-item">
+                    <span class="prayer-name">Isha</span>
+                    <span class="prayer-time" id="ishaTime">19:50</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Content Section -->
+        <section class="featured-content">
+            <h2><i class="fas fa-star"></i> Featured Content</h2>
+            <div class="content-grid">
+                <div class="content-item">
+                    <h3><i class="fas fa-book"></i> Latest Articles</h3>
+                    <ul id="latestArticles">
+                        <li><i class="fas fa-spinner fa-spin"></i> Loading...</li>
+                    </ul>
+                </div>
+                <div class="content-item">
+                    <h3><i class="fas fa-book-open"></i> Recent Books</h3>
+                    <ul id="recentBooks">
+                        <li><i class="fas fa-spinner fa-spin"></i> Loading...</li>
+                    </ul>
+                </div>
+                <div class="content-item">
+                    <h3><i class="fas fa-video"></i> Popular Videos</h3>
+                    <ul id="popularVideos">
+                        <li><i class="fas fa-spinner fa-spin"></i> Loading...</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="overlay"></div>
+
+    <script>
+/* script.js — inlined for the same reason as the styles above. */
+// DOM Elements
+const menuToggle = document.getElementById('menuToggle');
+const sidebar = document.getElementById('sidebar');
+const closeSidebar = document.getElementById('closeSidebar');
+const overlay = document.getElementById('overlay');
+const navLinks = document.querySelectorAll('.nav-link');
+
+// Toggle sidebar menu
+function toggleSidebar() {
+    sidebar.classList.toggle('active');
+    overlay.classList.toggle('active');
+    document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : 'auto';
+}
+
+// Close sidebar
+function closeSidebarMenu() {
+    sidebar.classList.remove('active');
+    overlay.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Event listeners
+menuToggle.addEventListener('click', toggleSidebar);
+closeSidebar.addEventListener('click', closeSidebarMenu);
+overlay.addEventListener('click', closeSidebarMenu);
+
+// Close menu when clicking on navigation links
+navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        if (link.dataset.page) {
+            e.preventDefault();
+            closeSidebarMenu();
+            loadPage(link.dataset.page);
+        }
+    });
+});
+
+// Page loading functionality
+function loadPage(page) {
+    // Navigate to the matching page of the portal
+    var pages = { home: 'index.html', articles: 'articles.html', books: 'books.html', videos: 'videos.html', audios: 'audios.html' };
+    if (pages[page]) { window.location.href = pages[page]; }
+}
+
+// Function to update dates
+function updateDates() {
+    const now = new Date();
+    const gregorianDate = now.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
+    // For Islamic date, we'll use a proper conversion function
+    const islamicDate = getIslamicDate(now);
+
+    document.getElementById('gregorianDate').textContent = gregorianDate;
+    document.getElementById('islamicDate').textContent = islamicDate;
+}
+
+// Function to get Islamic date (more accurate calculation)
+function getIslamicDate(date) {
+    // This is a more accurate placeholder implementation
+    // In a real application, you would use a proper Islamic date library like 'moment-hijri'
+
+    // Simple conversion factors (approximate)
+    const daysInGregorianYear = 365.25;
+    const daysInIslamicYear = 354.37;
+
+    // Base date: January 1, 2024 = 19 Jumada al-Awwal, 1445 AH
+    const baseGregorian = new Date(2024, 0, 1); // Jan 1, 2024
+    const baseIslamicDay = 19;
+    const baseIslamicMonth = 4; // Jumada al-Awwal is month 5 (0-indexed as 4)
+    const baseIslamicYear = 1445;
+
+    const months = ['Muharram', 'Safar', 'Rabi\' al-Awwal', 'Rabi\' al-Thani', 'Jumada al-Awwal',
+                   'Jumada al-Thani', 'Rajab', 'Sha\'ban', 'Ramadan', 'Shawwal',
+                   'Dhu al-Qi\'dah', 'Dhu al-Hijjah'];
+
+    // Calculate difference in days
+    const diffTime = Math.abs(date - baseGregorian);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    // Approximate calculation (this is still simplified)
+    const daysToAdd = diffDays; // In a real implementation, you'd need to account for the different year lengths
+
+    // Calculate Islamic date (simplified)
+    let day = baseIslamicDay + daysToAdd;
+    let month = baseIslamicMonth;
+    let year = baseIslamicYear;
+
+    // This is still a simplified approach - in a real app, use a proper library
+    // For demo purposes, we'll just return a fixed date that's close to current
+    const currentIslamicDate = getCurrentIslamicDate(date);
+    return `${currentIslamicDate.day} ${months[currentIslamicDate.month]} ${currentIslamicDate.year} AH`;
+}
+
+// Helper function for Islamic date calculation (simplified)
+function getCurrentIslamicDate(date) {
+    // This is a simplified calculation - in a real app, use a proper Islamic date library
+    // For demonstration purposes, we'll return a date that's approximately correct
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
+
+    // This is a very rough approximation
+    // In a real implementation, use a library like 'moment-hijri' or 'hijri-date'
+    let hijriYear, hijriMonth, hijriDay;
+
+    // Approximate conversion (not accurate, for demo only)
+    if (year === 2024) {
+        // January 2024 is approximately Jumada al-Awwal 1445 AH
+        hijriYear = 1445;
+        hijriMonth = 4; // Jumada al-Awwal (0-indexed)
+        hijriDay = day + 18; // Approximate offset
+
+        if (hijriDay > 30) {
+            hijriDay -= 30;
+            hijriMonth++;
+        }
+
+        if (hijriMonth > 11) {
+            hijriMonth = 0;
+            hijriYear++;
+        }
+    } else {
+        // For other years, use a rough calculation
+        hijriYear = year - 622; // Very rough approximation
+        hijriMonth = month;
+        hijriDay = day;
+    }
+
+    return {
+        year: hijriYear,
+        month: hijriMonth,
+        day: hijriDay
+    };
+}
+
+// Function to load daily hadith
+// This demo is a fully static site — there is no server or /api backend,
+// so the hadith is picked locally from the built-in collection below.
+function loadDailyHadith() {
+    const hadiths = [
+            {
+                text: "The best among you are those who have the best manners and character.",
+                reference: "Sahih al-Bukhari 6035"
+            },
+            {
+                text: "None of you believes until he loves for his brother what he loves for himself.",
+                reference: "Sahih al-Bukhari 13"
+            },
+            {
+                text: "The ink of the scholar is more sacred than the blood of the martyr.",
+                reference: "At-Tirmidhi"
+            },
+            {
+                text: "Seek knowledge from the cradle to the grave.",
+                reference: "Sunan Ibn Majah 224"
+            },
+            {
+                text: "The strong is not the one who overcomes the people by his strength, but the strong is the one who controls himself while in anger.",
+                reference: "Sahih al-Bukhari 6114"
+            }
+        ];
+
+    // Get today's hadith based on date
+    const today = new Date();
+    const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
+    const index = dayOfYear % hadiths.length;
+
+    const hadith = hadiths[index];
+    document.getElementById('hadithContent').innerHTML = `<p>${hadith.text}</p>`;
+    document.getElementById('hadithReference').innerHTML = `<em>${hadith.reference}</em>`;
+}
+
+// Function to load featured content
+// Static demo: the featured items are the portal's own pages, so they are
+// listed locally and link straight to the Articles / Books / Videos pages.
+function loadFeaturedContent() {
+    const articles = [
+        { title: "Understanding Prayer in Islam", link: "articles.html" },
+        { title: "The Importance of Charity (Zakat)", link: "articles.html" },
+        { title: "Ramadan Reflections", link: "articles.html" }
+    ];
+
+    const books = [
+        { title: "The Sealed Nectar", link: "books.html" },
+        { title: "Sahih al-Bukhari", link: "books.html" },
+        { title: "Fortification of the Soul", link: "books.html" }
+    ];
+
+    const videos = [
+        { title: "Introduction to Quran", link: "videos.html" },
+        { title: "Prayer Tutorial - Step by Step", link: "videos.html" },
+        { title: "Hajj Pilgrimage Guide", link: "videos.html" }
+    ];
+
+    // Update articles
+    const articlesList = document.getElementById('latestArticles');
+    articlesList.innerHTML = '';
+    articles.forEach(article => {
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="${article.link}">${article.title}</a>`;
+        articlesList.appendChild(li);
+    });
+
+    // Update books
+    const booksList = document.getElementById('recentBooks');
+    booksList.innerHTML = '';
+    books.forEach(book => {
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="${book.link}">${book.title}</a>`;
+        booksList.appendChild(li);
+    });
+
+    // Update videos
+    const videosList = document.getElementById('popularVideos');
+    videosList.innerHTML = '';
+    videos.forEach(video => {
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="${video.link}">${video.title}</a>`;
+        videosList.appendChild(li);
+    });
+}
+
+// Initialize the page
+function init() {
+    updateDates();
+    loadDailyHadith();
+    loadFeaturedContent();
+
+    // Update dates every minute
+    setInterval(updateDates, 60000);
+}
+
+// Run initialization when DOM is loaded
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

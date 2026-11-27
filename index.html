@@ -149,6 +149,21 @@
   a.view{font-weight:800; color:var(--accent); text-decoration:none; font-size:.9rem; display:inline-flex; align-items:center; gap:6px; padding:6px 0}
   a.view:hover{text-decoration:underline}
   .entry-note{font-size:.84rem; color:var(--muted); font-weight:600}
+  /* Project cards: navy theme hover (Projects section only) */
+  #projects .entry:hover{background:linear-gradient(160deg, var(--navy-900) 0%, var(--navy-800) 100%); border-color:var(--navy-800); box-shadow:0 16px 36px rgba(10,31,61,.28)}
+  #projects .entry:hover .when{color:#8fa5c4}
+  #projects .entry:hover h3{color:#fff}
+  #projects .entry:hover h3 .sep{color:#8fa5c4}
+  #projects .entry:hover h3 .org, #projects .entry:hover h3 .ttl{color:#9db9dd}
+  #projects .entry:hover .sub{color:#9db9dd}
+  #projects .entry:hover p, #projects .entry:hover li{color:#d7e2f0}
+  #projects .entry:hover .tags span{background:rgba(255,255,255,.14); color:#fff}
+  #projects .entry:hover .demo-btn{background:#fff; color:var(--navy-900)}
+  #projects .entry:hover .demo-btn:hover{background:#dbe7f7; color:var(--navy-900)}
+  #projects .entry:hover a.view{color:#9db9dd}
+  #projects .entry:hover .entry-note{color:#8fa5c4}
+  #projects .entry:hover .preview, #projects .entry:hover .workflow{border-color:rgba(255,255,255,.25)}
+  #projects .entry:hover .workflow figcaption{color:#8fa5c4}
   .archive-link{display:inline-flex; align-items:center; gap:7px; margin-top:22px; font-weight:800; color:var(--ink); text-decoration:none; font-size:.95rem}
   .archive-link:hover{color:var(--accent); text-decoration:underline}
   .now-badge{display:inline-block; font-size:.68rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; background:var(--navy); color:#fff; padding:3px 8px; border-radius:999px; margin-left:9px; vertical-align:2px}
